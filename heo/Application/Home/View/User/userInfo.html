@@ -1,0 +1,274 @@
+<extend name="Public:base" />
+<block name='css'>
+   <style type="text/css" media="screen">
+       .gender:hover{
+            cursor: pointer;
+       }
+   </style>
+</block>
+<block name='title'>
+    <title>个人中心</title>
+</block>
+<block name="main">
+    <div class="col-xs-12 col-sm-12" >
+        <div>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#baseInfo" aria-controls="baseInfo" role="tab" data-toggle="tab">基本信息</a></li>
+            <li role="presentation"><a href="#msgInfo" aria-controls="msgInfo" role="tab" data-toggle="tab">留言信息</a></li>
+            <li role="presentation"><a href="#sysInfo" aria-controls="sysInfo" role="tab" data-toggle="tab">系统消息</a></li>
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">设置</a></li>
+          </ul>
+          <!-- Tab panes -->
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane fade in active" id="baseInfo">
+    <div class="panel panel-default">
+        <table class="table table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <td>用户名:</td>
+                    <td>{$baseInfo.username}</td>
+                </tr>
+                <tr>
+                    <td>电子邮件</td>
+                    <td>{$baseInfo.email}</td>
+                </tr>
+                <tr>
+                    <td>生日</td>
+                    <td>{$baseInfo.birthday|date="Y-m-d",###}</td>
+                </tr>
+                <tr>
+                    <td>性别</td>
+                    <td>
+                        <switch name="baseInfo.gender">
+                            <case value='0'>保密</case>
+                            <case value='1'>男</case>
+                            <case value='2'>女</case>
+                        </switch>
+                    </td>
+                </tr>
+                <tr>
+                    <td>文章数量</td>
+                    <td>{$baseInfo.acount}</td>
+                </tr>
+                <tr>
+                    <td>登陆次数</td>
+                    <td>{$baseInfo.login_count}</td>
+                </tr>
+                <tr>
+                    <td>上次登录时间</td>
+                    <td>{$baseInfo.last_login_time|date='Y-m-d',###}</td>
+                </tr>
+                <tr>
+                    <td>上次登录IP</td>
+                    <td>{$baseInfo.last_login_ip|long2ip}</td>
+                </tr>
+                <tr>
+                    <td>加入时间</td>
+                    <td>{$baseInfo.createtime|date='Y-m-d',###}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+  <div role="tabpanel" class="tab-pane fade" id="msgInfo">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">我的留言</div>
+      <!-- Table -->
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>文章名</th>
+                    <th>留言详情</th>
+                    <th>留言时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="commentInfo" id="com" empty="暂时没有记录">
+                    <tr>
+                        <td class="head">{$com.title}</td>
+                        <td class="content">{$com.content}</td>
+                        <td>{$com.time|date='Y-m-d h:m:s',###}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">我的回复</div>
+      <!-- Table -->
+      <div class="table-responsive">
+         <table class="table table-bordered table-hover ">
+            <thead>
+                <tr>
+                    <th>用户ID</th>
+                    <th>回复详情</th>
+                    <th>回复时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="replyFromMe" id="repf" empty="暂时没有记录">
+                    <tr>
+                        <td class="head">{$repf.username}</td>
+                        <td class="content">{$repf.content}</td>
+                        <td>{$repf.time|date='Y-m-d h:m:s',###}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>         
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">回复我的</div>
+      <!-- Table -->
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>回复者</th>
+                    <th>回复详情</th>
+                    <th>回复时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="replyToMe" id="rept" empty="暂时没有记录">
+                    <tr>
+                        <td class="head">{$rept.username}</td>
+                        <td class="content">{$rept.content}</td>
+                        <td>{$rept.time|date='Y-m-d h:m:s',###}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+  <div role="tabpanel" class="tab-pane fade" id="sysInfo">
+    <div class="panel panel-default">
+      <!-- Table -->
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>发布者</th>
+                    <th>通知详情</th>
+                    <th>通知时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="replyToMe" id="rept" empty="暂时没有记录">
+                    <tr>
+                        <td class="head">admin</td>
+                        <td class="content">{$rept.content}</td>
+                        <td>{$rept.time|date='Y-m-d h:m:s',###}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+  <div role="tabpanel" class="tab-pane fade" id="settings">
+    <div class="panel panel-default">
+      <!-- Table -->
+      <table class="table table-bordered">
+      <form id="setInfo" action="setUserInfo" method="post" enctype="multipart/form-data">
+        <tr>
+            <th colspan="" rowspan="" headers=""><br><br>当前头像</th>
+            <td colspan="" rowspan="" headers="">
+                <label><span class="default-tx"></span></label>&nbsp;<img src="{$setInfo.imgpath}" alt="..." class="img-circle imgtx" style="width: 80px;height: 80px">
+                <label for="img" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传预览 &nbsp;<img src="" alt="" class="img-circle" id="show_pic" style="width: 80px;height: 80px"></label>
+                <input type="file" name="myfile" id="uploadtx" value="" accept=".jpg,.png,.jpeg" placeholder="">
+            </td>
+        </tr>
+        <tr>
+            <th colspan="" rowspan="" headers="">当前用户名:</th>
+            <td colspan="" rowspan="" headers=""><input type="text" name="username" class="form-control" value="{$setInfo.username}" placeholder=""></td>
+        </tr>
+        <tr>
+            <th colspan="" rowspan="" headers="">当前电子邮箱</th>
+            <td colspan="" rowspan="" headers=""><input type="email" class="form-control" name="email" value="{$setInfo.email}" placeholder=""></td>
+        </tr>
+        <tr>
+            <th colspan="" rowspan="" headers="">设定生日:</th>
+            <td colspan="" rowspan="" headers=""><input type="date" class="form-control" name="birthday" value="{$setInfo.birthday|date="Y-m-d",###}" placeholder=""></td>
+        </tr>
+        <tr>
+            <th colspan="" rowspan="" headers="">性别:</th>
+            <td colspan="" rowspan="" headers=""><span class="label label-default gender" value="1">男</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-default gender" value="2">女</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-default gender" value="0">保密</span></td>
+        </tr>
+        <input type="hidden" name="gender" id="gender" value="{$setInfo.gender}">
+        <tr>
+            <td colspan="" rowspan="" headers=""></td>
+            <td colspan="" rowspan="" headers="">
+                <button type="submit" class="btn btn-primary">保存更改</button>
+            </td>
+        </tr>
+        </form>
+      </table>
+    </div>
+  </div>
+
+</div>
+        </div>
+    </div>
+</block>
+
+<block name="sidebar">
+</block>
+<block name="js">
+<script>
+    $(document).ready(function() {
+       $('.content').each(function () {
+            var context = $(this).text();
+            if (context.length > 60) {
+                $(this).text(context.substring(0,60)+'...');
+            } 
+            $(this).css('width','850px');
+       });
+       $('.head').each(function () {
+            var context = $(this).text();
+            if (context.length > 10) {
+                $(this).text(context.substring(0,10)+'...');
+            } 
+       })
+      var imgpath = $('.imgtx').attr('src');
+      if (imgpath == "/thinkweb/Public/home/imgs/defaultx.png") {
+        $('.default-tx').text('默认头像');
+      };
+      $('#uploadtx').on('change', function handleFileSelect(evt) {
+        var files = evt.target.files, f = files[0];
+            if (!/image\/\w+/.test(f.type)){
+                 alert("请确保文件为图像类型");
+                 return false;
+            }
+            var reader = new FileReader();
+            reader.onload = (function(theFile) {
+            return function(e) {
+                $('#show_pic').attr('src',e.target.result);
+            };
+            })(f);
+            reader.readAsDataURL(f);
+    });
+      $('.gender').each(function () {
+           if ($(this).attr('value') == $('#gender').val()) {
+            $(this).removeClass('label-default');
+            $(this).addClass('label-warning');
+           }
+      })
+      $('.gender').each(function () {
+        $(this).click(function () {
+             $(this).siblings().each(function () {
+                  $(this).addClass('label-default');
+                  $(this).removeClass('label-warning');
+             });
+             $(this).addClass('label-warning');
+             $('#gender').val($(this).attr('value'));
+        })
+      })
+    });
+</script>
+</block>

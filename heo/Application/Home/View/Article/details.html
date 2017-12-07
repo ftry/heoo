@@ -1,0 +1,198 @@
+<extend name="Public:base" />
+<block name='title'><title>主页</title></block>
+<block name='css'>
+  <style type="text/css" media="screen">
+    dd{
+      text-indent: 28px;
+    }
+  </style>
+</block>
+<block name="sidebar">
+</block>
+<block name="main">
+<ol class="breadcrumb">
+  <li><a href="/">主页</a></li>
+  <li><a href="__CONTROLLER__/category">全部</a></li>
+  <li><a href="__CONTROLLER__/category?cat={$details.tagname}">{$details.tagname}</a></li>
+  <li class="active">详细</li>
+<!--   <input type="hidden" name="uid" id="uid" value="{$details.uid}"> -->
+  <input type="hidden" name="aid" id="aid" value="{$details.aid}">
+</ol>
+        <div class="col-xs-12 col-sm-12">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">侧栏</button>
+          </p>
+          <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">{$details.title}</h3>
+              </div>
+              <div class="panel-body">
+                <h1 style="font-family: 微软雅黑">{$details.title}</h1>
+                <br>
+                  <label for=""><span class="glyphicon glyphicon-user" aria-hidden="true">{$details.username}</span></label>&nbsp;&nbsp;
+                  <label for=""><span class="glyphicon glyphicon-time" aria-hidden="true">{$details.publish|date="Y-m-d h:m:s",###}</span></label>&nbsp;&nbsp;
+                  <label for=""><span class="glyphicon glyphicon-tag" aria-hidden="true">{$details.tagname} </span></label>&nbsp;&nbsp;
+                  <label for=""><span class="glyphicon glyphicon-eye-open" aria-hidden="true">{$details.hits} </span></label>
+                  <label style="float: right;"><span id="like" class="glyphicon glyphicon-thumbs-up" aria-hidden="true">点赞</span></label>
+                  <hr>
+            <p style="text-indent: 2em;">{$details.content|htmlspecialchars_decode}</p>
+              </div>
+          </div>
+          <if condition='isset($prev)'>
+              <a href="__ACTION__?artid={$prev}" title="">
+                      <button type="button" class="btn btn-info">
+                        <span class="glyphicon glyphicon-backward" aria-hidden="true">
+                        上一篇
+                        </span>
+                    </button>
+              </a>
+              <else />
+              <a href="#" title="">
+                      <button type="button" class="btn btn-info">
+                        <span class="glyphicon glyphicon-backward" aria-hidden="true">
+                        上一篇
+                        </span>
+                    </button>
+              </a>
+          </if>
+
+          <if condition='isset($next)'>
+          <a href="__ACTION__?artid={$next}" title="">
+                  <button type="button" class="btn btn-info" style="float: right;">&nbsp;
+                    <span class="  glyphicon glyphicon-forward" aria-hidden="true">
+                    下一篇
+                    </span>
+                </button>
+          </a>
+          <else />
+          <a href="#" title="">
+                  <button type="button" class="btn btn-info" style="float: right;">&nbsp;
+                    <span class="  glyphicon glyphicon-forward" aria-hidden="true">
+                    下一篇
+                    </span>
+                </button>
+          </a>
+          </if>
+      <hr>
+      <button class="btn btn-primary" role="button" data-toggle="collapse" data-parent="#accordion" href="#comments" aria-expanded="false" aria-controls="comments" id="view-comments">
+        查看留言
+      </button>
+      <div class="collapse in" id="comments">
+        <div class="well">
+          <form action="addComment" method="post">
+              <div class="input-group">
+                <textarea name="comment"  id="user-comment" placeholder="写下你的看法" maxlength="200" rows="3" style="resize: none;" class="form-control"></textarea>
+                <input type="hidden" name="aid" value="{$details.aid}" class="comment">
+                <span class="input-group-btn">
+                  <button class="btn btn-info" type="submit" id="submit">提交</button>
+                </span>
+              </div>
+            </form>
+              <br>
+          <div class="panel panel-default" id="comments">
+            <div class="panel-heading">最近留言</div>
+            <div class="panel-body">
+              <volist name='comments' id='comment' empty="暂时没有数据">
+
+                    <dl>
+                      <dt>
+
+                        <p class="text-primary"><img src="{$comment.imgpath}" style="width: 40px;height: 40px" alt="fd">&nbsp;
+                        <if condition="$comment['pid'] eq 0">
+                           <span class="cuser cid{$comment.cid}" style="color: #6C7A89">{$comment.username}</span> 发表留言:
+                           <else/>
+                           <span class="cuser cid{$comment.cid}" style="color: #6C7A89">{$comment.username}</span> 回复 <span class="pid" value="{$comment.pid}" style="color: #6C7A89"></span> 留言:
+                        </if>
+
+                        <span style="float: right;">{$comment.time|date='Y-m-d H:m:s',###} &nbsp;&nbsp;
+
+                        <if condition="$Think.session.uid eq $details['uid'] and $comment['uid'] eq $details['uid']">
+                              <a href="deleteComment?cid={$comment.cid}" title="" onclick="return confirm('确认要删除本条留言?')"><button type="button" class="btn btn-warning btn-xs">删除</button></a>
+                              
+                        <elseif condition="$Think.session.uid eq $details['uid']"/>
+                              <button type="button" class="btn btn-success btn-xs reply">回复</button>
+                              <a href="deleteComment?cid={$comment.cid}" title="" onclick="return confirm('确认要删除本条留言?')"><button type="button" class="btn btn-warning btn-xs">删除</button></a>
+
+                        <elseif condition="$Think.session.uid eq $comment['uid']"/>
+                              <a href="deleteComment?cid={$comment.cid}" title="" onclick="return confirm('确认要删除本条留言?')"><button type="button" class="btn btn-warning btn-xs">删除</button></a>
+
+                        <else/>
+                              <button type="button" class="btn btn-success btn-xs reply">回复</button>
+                        </if>
+                              <span type="hidden" class="cid" value="{$comment.cid}"></span></span>
+                        </p>
+                    </dt>
+                    <dd id="{$comment.cid}"><p class="text-info">{$comment.content}</p></dd>
+                  </dl>
+                      <hr>
+
+              </volist>
+
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div><!--/.col-xs-12.col-sm-9-->
+</block>
+<block name='js'>
+  <script>
+    $(document).ready(function() {
+      var act = $('#navbar').find('li.active');
+      act.removeClass('active');
+       $.post('__CONTROLLER__/like', {aid:{$details.aid},check:'c'}, function(data, textStatus, xhr) {
+         if (textStatus == 'success') {
+            if (data.cur == '1') {
+               $('#like').css('color','red');
+                $('#like').text('已赞');
+             }
+         }
+       });
+      $('#like').click(function() {
+         $.post('__CONTROLLER__/like', {aid:{$details.aid}}, function(data, textStatus, xhr) {
+           if (textStatus == 'success') {
+              if (data == '0') {
+                 $('#like').css('color','red');
+                  $('#like').text('已赞');
+               }else{
+                $('#like').css('color','black');
+                $('#like').text('点赞');
+               }
+           }
+         });
+      });
+      $('#submit').click(function () {
+          if ($('.comment').val() == '') {
+            alert('留言不能为空!');
+            return false;
+          }
+      })
+      $('.reply').click(function () {
+        if($(this).parents('dt').nextAll().hasClass('reform')){
+          $('.reform').remove();
+        }else{
+          var pid = $(this).siblings('span').attr('value');
+          $(this).parents('dt').next().after('<div class="reform"><form action="addComment" method="post"><div><textarea name="comment" id="comment" placeholder="回复留言" maxlength="200" rows="2" style="resize: none;" class="form-control"></textarea><input type="hidden" name="aid" value="{$details.aid}" required=""><input type="hidden" name="pid" value="'+pid+'" required=""><span class="input-group-btn"><button class="btn btn-info" type="submit" id="re-submit" style="float:right">回复</button></span></div></form></div>');
+        }
+      });
+      var comments = {$comments_json};
+      var username = $('#logined').text();
+      $('span.cuser').each(function () {
+          if ($(this).text() == username) {
+            $(this).text('我');
+          }
+      })
+      $('span.pid').each(function () {
+          var pid = $(this).attr('value');
+          var replyname = $('span.cid'+pid).text();
+          if (username == replyname) {
+            $(this).text('我');
+          }else{
+            $(this).text('@'+replyname);
+          }
+      })
+         $('img').each(function () {
+            $(this).addClass('img-responsive') ;
+         })
+    });
+  </script>
+</block>

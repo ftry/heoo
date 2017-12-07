@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>校园新闻</title>
+</head>
+<body>
+ 
+   <table>
+    <tr>
+        <!--<td></td>-->
+        <td>{$data.tite}</td>
+    </tr>
+    <tr>
+        <!--<td></td>-->
+        <td>{$data.conctnt}</td>
+    </tr>
+     
+    
+    </table>
+    <form action="__URL__/words" method="post">
+    <li>新闻列表</li><br/>
+    <volist name="list" id="vo">
+        <!--{$vo.title}<INPUT type = "submit" value = "查看"><br/>-->
+            <a href="__CONTROLLER__/words?id={$vo.id}">{$vo.title}<br/></a>
+    </volist>
+    </form>
+</body>
+</html>

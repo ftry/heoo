@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>笑死你</title>
+</head>
+<body>
+ <form action="__URL__/video" method="post">
+    <volist name="list" id="vo">
+         
+    
+     <video width="320" height="240" controls="controls">
+
+         <source src="__PUBLIC__/video/{$vo.name}.mp4" type="video/mp4"/>
+         
+
+       
+
+     </video><br/>
+    </volist>
+ </form>
+    
+</body>
+</html>

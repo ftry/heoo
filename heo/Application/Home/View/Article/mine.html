@@ -1,0 +1,47 @@
+<extend name="Public:base" />
+<block name='title'><title>我的文章</title></block>
+
+<block name="main">
+    <div class="panel panel-info">
+      <div class="panel-heading">我的文章</div>
+      <div class="panel-body">
+        <table  class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Ordinal</th>
+                <th>Title</th>
+                <th>Tag</th>
+                <th>Time</th>
+                <th>Hits</th>
+                <th>Likes</th>
+                <th>Operations</th>
+            </tr>
+        </thead>
+            <tbody>
+                <volist name = "myarts" id = "myart" key = "key">
+                <tr>
+                    <td>{$key + $order}</td>
+                    <td>{$myart.title}</td>
+                    <td>{$myart.tagname}</td>
+                    <td>{$myart.time|date="Y-m-d H:s:s",###}</td>
+                    <td>{$myart.hits}</td>
+                    <td>{$myart.likes}</td>
+                    <td><a type="button" class="btn btn-warning  btn-xs" href="__CONTROLLER__/edit?aid={$myart.aid}">编辑</a>&nbsp;&nbsp;
+                        <a type="button" class="btn btn-danger  btn-xs" href="__CONTROLLER__/delete?aid={$myart.aid}" onclick="javescript:return confirm('确认删除这篇文章?')">删除</a>
+                    </td>
+                </tr>
+                </volist>
+            </tbody>
+        </table>
+      </div>
+    </div>
+</block>
+<block name="pager">
+  <nav class="col-md-6 col-md-offset-5">
+  {$page}
+</nav>
+</block>
+<block name="sidebar">
+</block>
+<block name="js">
+</block>
